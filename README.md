@@ -1,5 +1,3 @@
-# Trabajo Practico N1 para la materia de Redes  de la carrera Analista de Sistemas por Tobias Casaux
-
 # Registro de Dispositivos
 
 Este proyecto consiste en el desarrollo de una API REST utilizando Node.js y Express.

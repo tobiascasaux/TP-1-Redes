@@ -21,13 +21,15 @@ Instalar dependencias:
 
 pnpm install / npm install
 
+Crear un archivo `.env` en la raíz del proyecto con el siguiente contenido:
+
+PORT=3000
+
 Ejecutar el servidor:
 
 pnpm run dev / npm run dev
 
-El servidor se levanta segun el PORT del .env (yo lo corri en 3000):
-
-http://localhost:3000
+![servidor levantado](./src/capturas/PORT.png)
 
 ---
 
@@ -36,39 +38,38 @@ http://localhost:3000
 **Obtener todos los dispositivos**  
 GET /dispositivos
 
+
+![Get Todos](./src/capturas/GetAll.png)
+
+**Obtener todos los dispositivos por Estado**  
+GET /dispositivos?estado=estado
+
+
+![Get Estado](./src/capturas/estado=activo.png)
+
 **Obtener un dispositivo por ID**  
 GET /dispositivos/:id
+
+
+![Get id](./src/capturas/GetId.png)
 
 **Crear un dispositivo**  
 POST /dispositivos
 
-Ejemplo de body:
 
-```json
-{
-  "nombre": "PC-1234",
-  "ip": "192.168.0.1",
-  "estado": "activo", (por defecto el estado es "activo")
-  "tipo": "router"
-}
-```
+![Crear Dispositivos](./src/capturas/Post.png)
 
 **Actualizar un dispositivo**  
 PUT /dispositivos/:id
 
-Ejemplo de body:
 
-```json
-{
-  "nombre": "PC-1234",
-  "ip": "192.168.0.1",
-  "estado": "fuera de linea",
-  "tipo": "router"
-}
-```
+![Actualizar Dispositivo](./src/capturas/Put.png)
 
 **Eliminar un dispositivo**  
 DELETE /dispositivos/:id
+
+
+![Eliminar dispositivo](./src/capturas/Delete.png)
 
 ---
 
@@ -78,6 +79,9 @@ Se implementaron dos middlewares:
 
 - logs: muestra en consola el método, la ruta y el momento en que se realiza cada request.  
 - validarObjeto: valida los datos recibidos en POST y PUT (nombre, IP y tipo).  
+- authorization: verifica que el header `Authorization` tenga el valor `1234` antes de acceder a cualquier ruta.
+
+![Authorization](./src/capturas/Autorizado.png)
 
 ---
 
@@ -90,6 +94,14 @@ Se implementaron dos middlewares:
 ---
 
 Los datos se almacenan en un array en memoria.
+
+---
+
+### Extras
+
+- Búsqueda por estado: `GET /dispositivos?estado=activo`
+- Middleware de autenticación: header `Authorization: 1234`
+- `createdAt`: cada dispositivo registra la fecha y hora exacta de su creación
 
 ---
 

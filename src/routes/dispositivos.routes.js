@@ -3,7 +3,7 @@ const router = express.Router();
 const validarObjeto = require('../middlewares/validarObjeto')
 
 let dispositivos = [ // array de objetos
-    { // este valor esta hardcodeado, si quiere lo puede borrar lo borra
+    { // este valor esta hardcodeado, si quiere lo puede borrar
         id: 1,
         nombre: "PC-Oficina",
         ip: "192.168.0.10",
@@ -13,9 +13,21 @@ let dispositivos = [ // array de objetos
 ]
 // Uso Router en vez de app para separar las rutas en archivos distintos, 
 // manteniendo el servidor organizado por "temas".
-router.get('/', (req, res) => { // endPoint que trae todos los dispositivos
-    res.status(200).json(dispositivos);
-});
+router.get('/', (req, res) => {
+    const { estado } = req.query // si pasan ?estado=activo, guarda el valor activo
+
+    if (estado) {
+        const filtrados = dispositivos.filter(objArray => objArray.estado === estado) //filtra con todos los que coincidan con estado
+
+        if (filtrados.length === 0) { // por si no encontro ninguno estado
+            return res.status(404).json({ error: 'No se encontraron dispositivos con ese estado' })
+        }
+
+        return res.status(200).json(filtrados) // mostrar los dispositivos filtrados
+    }
+
+    res.status(200).json(dispositivos)// si no pasaron query, mostrar array dispositivos
+})
 
 router.get('/:id', (req, res) => { //endPoint quue trae 1 dispositivo por id
     const id = req.params.id;
@@ -38,7 +50,8 @@ router.post('/', validarObjeto, (req, res) => { // endPoint que genera un dispos
         nombre,
         ip,
         estado: estado || 'activo',
-        tipo
+        tipo,
+        createdAt: new Date().toISOString() // (extra) guarda la fecha y hora exacta de creación del dispositivo
     }
 
     dispositivos.push(nuevoDispositivo) // pusheo el nuevo objeto a la array
